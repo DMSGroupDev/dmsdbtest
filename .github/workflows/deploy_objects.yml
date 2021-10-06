@@ -24,7 +24,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Install PG client
-        run: apt install postgresql-client
+        run: sudo apt install postgresql-client
         
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #      - uses: actions/checkout@v2
@@ -38,3 +38,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          echo ${{ env.BRANCH_NAME }}
