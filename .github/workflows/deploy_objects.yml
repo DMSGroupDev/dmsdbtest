@@ -35,11 +35,12 @@ jobs:
           echo test, and deploy your project.
           echo ${{ env.BRANCH_NAME }}
           echo ${{ env.SERVER }}
+          export
 
       # Runs a single command using the runners shell
       - name: Connect to DB
         run: |
-          psql -h ${{ secrets.SERVER }} -d ${{ secrets.DATABASE }} -U ${{ secrets.USERNAME }}
+          psql -h '${{ secrets.SERVER }}' -d '${{ secrets.DATABASE }}' -U '${{ secrets.USERNAME }}'
           psql -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'";
 
 
