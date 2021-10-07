@@ -33,7 +33,7 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           echo ${{ env.BRANCH_NAME }}
-          echo ${{ env.SERVER }}
+          echo ${{ secrets.SERVER }}
           export
 
       # Runs a single command using the runners shell
