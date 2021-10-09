@@ -39,7 +39,6 @@ jobs:
       # Runs a single command using the runners shell
       - name: Connect to DB
         run: |
-          psql ${{ env.DATABASE_URL }} 
-          #psql -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'";
+          psql ${{ env.DATABASE_URL }} -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'";
 
 
