@@ -13,9 +13,6 @@ on:
   
 env:
   BRANCH_NAME: echo $GITHUB_REF | cut -d/ -f3
-  DATABASE_URL: ${{ secrets.DATABASE_URI }}
-  FLYWAY_DEFAULT_SCHEMA: ${{ secrets.SCHEMA }}
-  FLYWAY_SCHEMAS: ${{ secrets.SCHEMAS }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -42,6 +39,10 @@ jobs:
 
       - uses: actions/checkout@v2
       - uses: joshuaavalon/flyway-action@v1
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URI }}
+          FLYWAY_DEFAULT_SCHEMA: ${{ secrets.SCHEMA }}
+          FLYWAY_SCHEMAS: ${{ secrets.SCHEMAS }}
         with:
           url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
           user: ${{ secrets.USERNAME }}
