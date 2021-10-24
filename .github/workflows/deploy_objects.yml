@@ -35,19 +35,20 @@ jobs:
           url: jdbc:postgresql://postgres:5432/postgres
           user: postgres
           password: postgres
-      - run: echo 'testig'
-
-      - uses: actions/checkout@v2
-      - uses: joshuaavalon/flyway-action@v1
-        env:
-          DATABASE_URL: '${{ secrets.DATABASE_URI }}'
-          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
-          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
-        with:
-          url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
-          user: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-      - run: echo 'Real'
+      - run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xvz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
+      - run: flyway -v
+      
+#      - uses: actions/checkout@v2
+#      - uses: joshuaavalon/flyway-action@v1
+#        env:
+#          DATABASE_URL: '${{ secrets.DATABASE_URI }}'
+#          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
+#          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
+#        with:
+#          url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
+#          user: ${{ secrets.USERNAME }}
+#          password: ${{ secrets.PASSWORD }}
+#      - run: echo 'Real'
 
 
 #      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
