@@ -35,14 +35,14 @@ jobs:
           url: jdbc:postgresql://postgres:5432/postgres
           user: postgres
           password: postgres
-      - run: echo 'testing'
+      - run: echo 'testig'
 
       - uses: actions/checkout@v2
       - uses: joshuaavalon/flyway-action@v1
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URI }}
-          FLYWAY_DEFAULT_SCHEMA: ${{ secrets.SCHEMA }}
-          FLYWAY_SCHEMAS: ${{ secrets.SCHEMAS }}
+          DATABASE_URL: '${{ secrets.DATABASE_URI }}'
+          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
+          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
         with:
           url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
           user: ${{ secrets.USERNAME }}
