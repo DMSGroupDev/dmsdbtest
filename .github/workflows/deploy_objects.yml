@@ -30,13 +30,26 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v2
-      - uses: joshuaavalon/flyway-action@v1
+      - name: Test migration in Docker
+        uses: joshuaavalon/flyway-action@v1
         with:
           url: jdbc:postgresql://postgres:5432/postgres
           user: postgres
           password: postgres
-      - run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xvz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
-      - run: flyway -v
+      
+      - name: Download na copy Flyway
+        run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
+      
+      - name: Flyway version
+        run: flyway -v
+      
+      - name: Flyway validate
+        run: flyway migrate 
+        env:
+          DATABASE_URL: '${{ secrets.DATABASE_URI }}'
+          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
+          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
+          
       
 #      - uses: actions/checkout@v2
 #      - uses: joshuaavalon/flyway-action@v1
