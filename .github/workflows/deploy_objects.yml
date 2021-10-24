@@ -41,9 +41,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: joshuaavalon/flyway-action@v1
         with:
-          url: 'jdbc:${{ env.DATABASE_URL }}'
-          #user: postgres
-          #password: postgres
+          url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
+          user: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
       - run: echo 'Real'
 
 
@@ -55,8 +55,8 @@ jobs:
 #        run: |
 #          echo Add other actions to build,
 #          echo test, and deploy your project.
-#          echo ${{ env.BRANCH_NAME }}
-#          echo ${{ env.DATABASE_URL }}
+#          echo ${{ env.USERNAME }}
+#          echo ${{ env.PASSWORD }}
 #          export
 
 #      # Runs a single command using the runners shell
