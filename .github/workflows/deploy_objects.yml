@@ -44,14 +44,7 @@ jobs:
         run: flyway -v
       
       - name: Flyway validate
-        run: flyway migrate 
-        env:
-          FLYWAY_URL: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
-          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
-          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
-          FLYWAY_PASSWORD: '${{ secrets.PASSWORD }}'
-          FLYWAY_USERNAME: '${{ secrets.USERNAME }}'
-          
+        run: flyway -url='jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}' -user='${{ secrets.USERNAME }}' -password='${{ secrets.PASSWORD }}' -defaultSchema='${{ secrets.SCHEMA }}' -schemas='${{ secrets.SCHEMAS }}' migrate 
       
 #      - uses: actions/checkout@v2
 #      - uses: joshuaavalon/flyway-action@v1
