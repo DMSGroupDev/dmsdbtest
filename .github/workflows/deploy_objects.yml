@@ -49,8 +49,8 @@ jobs:
           FLYWAY_URL: '${{ secrets.DATABASE_URI }}'
           FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
           FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
-          FLYWAY_PASSWORD: '${{ secrets.SCHEMAS }}'
-          FLYWAY_USERNAME: '${{ secrets.SCHEMAS }}'
+          FLYWAY_PASSWORD: '${{ secrets.PASSWORD }}'
+          FLYWAY_USERNAME: '${{ secrets.USERNAME }}'
           
       
 #      - uses: actions/checkout@v2
