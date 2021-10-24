@@ -15,6 +15,7 @@ env:
   BRANCH_NAME: echo $GITHUB_REF | cut -d/ -f3
   DATABASE_URL: ${{ secrets.DATABASE_URI }}
   FLYWAY_DEFAULT_SCHEMA: ${{ secrets.SCHEMA }}
+  FLYWAY_SCHEMAS: ${{ secrets.SCHEMA }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
