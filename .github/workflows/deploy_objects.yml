@@ -46,9 +46,11 @@ jobs:
       - name: Flyway validate
         run: flyway migrate 
         env:
-          DATABASE_URL: '${{ secrets.DATABASE_URI }}'
+          FLYWAY_URL: '${{ secrets.DATABASE_URI }}'
           FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
           FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
+          FLYWAY_PASSWORD: '${{ secrets.SCHEMAS }}'
+          FLYWAY_USERNAME: '${{ secrets.SCHEMAS }}'
           
       
 #      - uses: actions/checkout@v2
