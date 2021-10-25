@@ -19,6 +19,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: Dev
     services:
       postgres:
         image: postgres
@@ -44,7 +45,7 @@ jobs:
       - name: Flyway version
         run: flyway -v
 
-      - name: Flyway validate
+      - name: Flyway validate 
         run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
               
 #      - uses: actions/checkout@v2
