@@ -45,10 +45,10 @@ jobs:
         run: flyway -v
 
       - name: DEFAULT_SCHEMA
-        run: echo ${{ secrets.DEFAULT_SCHEMA }} | base64
+        run: echo ${{ secrets.FLYWAY_DEFAULT_SCHEMA }} | base64
 
       - name: Flyway validate
-        run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
+        run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
               
 #      - uses: actions/checkout@v2
 #      - uses: joshuaavalon/flyway-action@v1
