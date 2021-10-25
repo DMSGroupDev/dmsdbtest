@@ -17,9 +17,8 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  Local-test:
     runs-on: ubuntu-latest
-    environment: Dev
     services:
       postgres:
         image: postgres
@@ -38,7 +37,12 @@ jobs:
           url: jdbc:postgresql://postgres:5432/postgres
           user: postgres
           password: postgres
-      
+
+  dev-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/devdeploy' }}
+    environment: Dev
+    steps:
       - name: Download na copy Flyway
         run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
       
@@ -47,7 +51,22 @@ jobs:
 
       - name: Flyway validate 
         run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
-              
+
+  test-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/testdeploy' }}
+    environment: Test
+    steps:
+      - name: Download na copy Flyway
+        run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
+      
+      - name: Flyway version
+        run: flyway -v
+
+      - name: Flyway validate 
+        run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
+
+
 #      - uses: actions/checkout@v2
 #      - uses: joshuaavalon/flyway-action@v1
 #        env:
