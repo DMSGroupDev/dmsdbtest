@@ -44,8 +44,8 @@ jobs:
       - name: Flyway version
         run: flyway -v
 
-      - name: Export
-        run: export
+      - name: Github context
+        run: echo "$GITHUB_CONTEXT"
 
 #      - name: Flyway validate
 #        run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
