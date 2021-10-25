@@ -13,6 +13,7 @@ on:
   
 env:
   BRANCH_NAME: echo $GITHUB_REF | cut -d/ -f3
+  DEFAULT_CHEMA: ${{ secrets.DEFAULT_SCHEMA }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -42,7 +43,10 @@ jobs:
       
       - name: Flyway version
         run: flyway -v
-      
+
+      - name: DEFAULT_SCHEMA
+        run: echo ${{ secrets.DEFAULT_SCHEMA }} | base64
+
       - name: Flyway validate
         run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
               
