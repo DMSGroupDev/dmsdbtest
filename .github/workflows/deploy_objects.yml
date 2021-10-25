@@ -6,7 +6,7 @@ name: Deploy objects to database
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ devdeploy ]
+    branches: [ devdeploy, testdeploy ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,6 +18,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Local-test:
+    name: Local migration test
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -39,11 +40,15 @@ jobs:
           password: postgres
 
   dev-deploy:
+    name: Migration to DEV environment  
     runs-on: ubuntu-latest
     needs: Local-test
     if: ${{ github.ref == 'refs/heads/devdeploy' }}
     environment: Dev
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+    
       - name: Download na copy Flyway
         run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
       
@@ -54,11 +59,15 @@ jobs:
         run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
 
   test-deploy:
+    name: Migration to TEST environment  
     runs-on: ubuntu-latest
     needs: Local-test
     if: ${{ github.ref == 'refs/heads/testdeploy' }}
     environment: Test
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Download na copy Flyway
         run: wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/8.0.2/flyway-commandline-8.0.2-linux-x64.tar.gz | tar xz && sudo ln -s `pwd`/flyway-8.0.2/flyway /usr/local/bin 
       
@@ -67,36 +76,4 @@ jobs:
 
       - name: Flyway validate 
         run: flyway -url="jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}" -user="${{ secrets.USERNAME }}" -password="${{ secrets.PASSWORD }}" -defaultSchema="${{ secrets.FLYWAY_DEFAULT_SCHEMA }}" -schemas="${{ secrets.SCHEMAS }}" migrate 
-
-
-#      - uses: actions/checkout@v2
-#      - uses: joshuaavalon/flyway-action@v1
-#        env:
-#          DATABASE_URL: 'jdbc:postgres:${{ secrets.DATABASE_URI }}'
-#          FLYWAY_DEFAULT_SCHEMA: '${{ secrets.SCHEMA }}'
-#          FLYWAY_SCHEMAS: '${{ secrets.SCHEMAS }}'
-#        with:
-#          url: 'jdbc:postgresql://${{ secrets.SERVER }}:5432/${{ secrets.DATABASE }}'
-#          user: ${{ secrets.USERNAME }}
-#          password: ${{ secrets.PASSWORD }}
-#      - run: echo 'Real'
-
-
-#      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#      - uses: actions/checkout@v2
-
-      # Runs a set of commands using the runners shell
-#      - name: Run a multi-line script
-#        run: |
-#          echo Add other actions to build,
-#          echo test, and deploy your project.
-#          echo ${{ env.USERNAME }}
-#          echo ${{ env.PASSWORD }}
-#          export
-
-#      # Runs a single command using the runners shell
-#      - name: Connect to DB
-#        run: |
-#          psql ${{ env.DATABASE_URL }} -c "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'";
-
-
+        
