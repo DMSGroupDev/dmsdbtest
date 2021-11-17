@@ -12,11 +12,11 @@ name: Database Migration Tests with Flyway
 on:
   push:
     branches: [ devdeploy, testdeploy ]
-    paths:
-      - 'sql/**'
-  pull_request:
-    paths:
-    - 'sql/**'
+#    paths:
+#      - 'sql/**'
+#  pull_request:
+#    paths:
+#    - 'sql/**'
   workflow_dispatch: {}
 
 jobs:
