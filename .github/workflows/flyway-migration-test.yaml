@@ -12,7 +12,7 @@ name: Database Migration Tests with Flyway
 on:
   push:
     branches:
-    - 'main'
+    - 'devdeploy'
     paths:
       - 'sql/**'
   pull_request:
